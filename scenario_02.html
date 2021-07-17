@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>シナリオから台詞を取り出すやつ v02</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+</head>
+
+<style>
+    textarea {
+        height: 15em;
+        width: 100%;
+    }
+
+    #app {
+        width: 80%;
+        margin: auto;
+    }
+
+</style>
+
+
+<div id="app">
+    <h1>シナリオから台詞を取り出すやつ v02</h1>
+    <section>
+        <h2>input </h2>
+        <textarea id="input" v-model="input" placeholder="[台詞 name=foobar][f]&#13;&#10;Hello[l][r]&#13;&#10;World[l][r][np][cm]&#13;&#10;[fadeoutbgm time=2000]&#13;&#10;&#13;&#10;[台詞 name=foobar][f]&#13;&#10;Hello[l][r]&#13;&#10;World[l][r][np][cm]&#13;&#10;[fadeoutbgm time=2000]"></textarea>
+    </section>
+    <section>
+        <h2>output (Googleスプレッドシートに貼り付けてください)</h2>
+        <textarea id="output" v-model="output"></textarea>
+    </section>
+</div>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            input: '',
+        },
+        computed: {
+            output: function () {
+                return this.input.split(/\r?\n/)?.filter(line => {
+                    return line.match(/^[^[;@{}\t*]|^\*label|^\[台詞|^$/)
+                }).join('\n').trim().split(/\n{2,}/).map(line => {
+                    return `"${line.trim().replace(/"/g, '""')}"`
+                }).join('\n')
+            }
+        }
+    })
+</script>
