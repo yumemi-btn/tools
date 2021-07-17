@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>シナリオから台詞を取り出すやつ v03</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+</head>
+
+<style>
+    textarea {
+        height: 15em;
+        width: 100%;
+    }
+
+    #app {
+        width: 80%;
+        margin: auto;
+    }
+
+</style>
+
+
+<div id="app">
+    <h1>シナリオから台詞を取り出すやつ v03</h1>
+    <section>
+        <h2>元データ(.ks)を入力</h2>
+        <textarea id="input" v-model="input" placeholder="[台詞 name=foobar][f]&#13;&#10;Hello[l][r]&#13;&#10;World[l][r][np][cm]&#13;&#10;[fadeoutbgm time=2000]&#13;&#10;&#13;&#10;[台詞 name=foobar][f]&#13;&#10;Hello[l][r]&#13;&#10;World[l][r][np][cm]&#13;&#10;[fadeoutbgm time=2000]"></textarea>
+    </section>
+    <section>
+        <h2>作業用データ (Googleスプレッドシートに貼り付け)</h2>
+        <textarea id="output" v-model="output" readonly></textarea>
+    </section>
+    <section>
+        <h2>翻訳文を入力 (Googleスプレッドシートから貼り付け)</h2>
+        <textarea id="input2" v-model="input2"></textarea>
+    </section>
+    <section>
+        <h2>翻訳済データ</h2>
+        <textarea id="output2" v-model="output2" readonly></textarea>
+    </section>
+</div>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            input: '',
+            input2: ''
+        },
+        computed: {
+            output: function () {
+                return this.input.match(/^$|^([^[;@{}\t*]|^\*label|^\[台詞).*$/gm).join('\n')
+            },
+            output2: function () {
+                if (!this.input2) { return '' }
+
+                let input2_splited = this.input2.split(/\r?\n/g)?.map(line => {
+                    return line.replace(/^"|"$/g, '').replace(/""/g, '"')
+                })
+
+                let count = 0
+                return this.input.replace(/^$|^([^[;@{}\t*]|^\*label|^\[台詞).*$/gm, match => {
+                    return input2_splited[count++] || (match && "### 翻訳文が未入力です ###")
+                })
+            }
+        }
+    })
+</script>
