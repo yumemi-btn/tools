@@ -59,7 +59,7 @@
         },
         computed: {
             output: function () {
-                return this.input.match(/^$|^\[台詞 [\S\s]+?(?=^\[)|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm)?.map(paragraph => {
+                return this.input.match(/^$|^\[台詞 [\S\s]+?(?=^[[;@{}\t*])|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm)?.map(paragraph => {
                     console.log(paragraph)
                     if (paragraph.match(/^\[台詞/)) {
                         return `"${paragraph.replace(/"/g, '""')}"\t"${paragraph.match(/^\[台詞.*$/m)[0].replace(/"/g, '""')}\n"`
@@ -74,7 +74,7 @@
                 let input2_cav = parseCSV(this.input2)
 
                 let count = 0
-                return this.input.replace(/^$|^\[台詞 [\S\s]+?(?=^\[)|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm, match => {
+                return this.input.replace(/^$|^\[台詞 [\S\s]+?(?=^[^[;@{}\t*])|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm, match => {
                     return input2_cav[count++]?.[0].replace(/\n$/, '') + '\n' || (match && "### 翻訳文が未入力です ###\n")
                 })
             }
