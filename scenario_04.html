@@ -72,11 +72,10 @@
                 if (!this.input2) { return '' }
 
                 let input2_cav = parseCSV(this.input2)
-                console.log(input2_cav)
 
                 let count = 0
                 return this.input.replace(/^$|^\[台詞 [\S\s]+?(?=^\[)|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm, match => {
-                    return input2_cav[count++]?.[0] || (match && "### 翻訳文が未入力です ###\n")
+                    return input2_cav[count++]?.[0].replace(/\n$/, '') + '\n' || (match && "### 翻訳文が未入力です ###\n")
                 })
             }
         }
