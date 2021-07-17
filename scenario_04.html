@@ -62,7 +62,7 @@
                 return this.input.match(/^$|^\[台詞 [\S\s]+?(?=^\[)|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm)?.map(paragraph => {
                     console.log(paragraph)
                     if (paragraph.match(/^\[台詞/)) {
-                        return `"${paragraph.replace(/"/g, '""')}"\t"${paragraph.match(/^\[台詞.*$/m)[0].replace(/"/g, '""')}"`
+                        return `"${paragraph.replace(/"/g, '""')}"\t"${paragraph.match(/^\[台詞.*$/m)[0].replace(/"/g, '""')}\n"`
                     } else {
                         return `"${paragraph.replace(/"/g, '""')}"`
                     }
