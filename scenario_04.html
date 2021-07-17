@@ -61,7 +61,11 @@
             output: function () {
                 return this.input.match(/^$|^\[台詞 [\S\s]+?(?=^\[)|^(\[台詞|^\*label|[^[;@{}\t*]).*$/gm)?.map(paragraph => {
                     console.log(paragraph)
-                    return `"${paragraph.replace(/"/g, '""')}"`
+                    if (paragraph.match(/^\[台詞/)) {
+                        return `"${paragraph.replace(/"/g, '""')}"\t"${paragraph.match(/^\[台詞.*$/m)[0].replace(/"/g, '""')}"`
+                    } else {
+                        return `"${paragraph.replace(/"/g, '""')}"`
+                    }
                 }).join('\n')
             },
             output2: function () {
