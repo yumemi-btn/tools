@@ -42,7 +42,7 @@
             output: function () {
                 return this.input.split(/\r?\n/)?.filter(line => {
                     return line.match(/^[^[;@{}\t*]|^\*label|^\[台詞|^$/)
-                }).join('\n').trim().split(/\n{2,}/).map(line => {
+                }).join('\n').replace(/(^\*label|^\[台詞)/gm, "\n\n$1").trim().split(/\n{2,}/).map(line => {
                     return `"${line.trim().replace(/"/g, '""')}"`
                 }).join('\n')
             }
