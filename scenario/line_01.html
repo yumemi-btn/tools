@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>人物毎の台詞を取り出す v01</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js" integrity="sha512-EbdJQSugx0nVWrtyK3JdQQ/03mS3Q1UiAhRtErbwl1YL/+e2hZdlIcSURxxh7WXHTzn83sjlh2rysACoJGfb6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<style>
+    textarea {
+        height: 15em;
+        width: 100%;
+    }
+
+    #app {
+        width: 80%;
+        margin: auto;
+    }
+
+</style>
+
+
+<div id="app">
+    <h1>人物毎の台詞を取り出す v01</h1>
+    <section>
+        <h2>元データ(テキスト)を入力</h2>
+        <textarea id="input" v-model="input" placeholder=""></textarea>
+    </section>
+    <section>
+        <h2>playse挿入済データ</h2>
+        <textarea id="output2" v-model="output2" readonly></textarea>
+    </section>
+
+    <section v-for="(データ, 名前) in 人物データ">
+        <h2>{{ 名前 }} <small>(台詞数: {{ データ.出現回数 }})</small></h2>
+
+        <textarea readonly>{{データ.台詞.join('\n----------------------------------------------------------------------\n')}}</textarea>
+    </section>
+</div>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            input: '',
+            置き換え用データ: [],
+            人物データ: {},
+        },
+        watch: {
+            input: function () {
+                if (!this.input) { return }
+                let 名前と台詞 = this.input.match(/\[台詞 name=.*\]|「[\s\S]*?」/mg)
+
+                let 人物データ = {}
+                let 現在の名前
+
+                let 置き換え用データ = []
+
+                名前と台詞.forEach(row => {
+                    if (row.match(/\[台詞 name=.*\]/)) {
+                        現在の名前 = row.match(/\[台詞 name=(.*)\]/)[1]
+                        if (!人物データ[現在の名前]) { 人物データ[現在の名前] = { 出現回数: 0, 台詞: [] } }
+
+                        置き換え用データ.push(row)
+                    } else {
+                        let 開始番号 = ('000' + (人物データ[現在の名前].出現回数 + 1)).slice(-4)
+                        台詞一式 = ('\n' + row).split(/(?<=\[l\].*$)/gm).map(台詞 => {
+                            let 連番 = ('000' + ++人物データ[現在の名前].出現回数).slice(-4)
+                            return `[playse storage="${現在の名前}${連番}" buf=5]` + 台詞
+                        }).join('\n')
+
+                        let 終了番号 = ('000' + 人物データ[現在の名前].出現回数).slice(-4)
+
+                        置き換え用データ.push(台詞一式)
+                        人物データ[現在の名前].台詞.push((開始番号 == 終了番号 ? `【${現在の名前}${開始番号}】\n` : `【${現在の名前}${開始番号} - ${現在の名前}${終了番号}】\n`) + row)
+                    }
+                });
+
+                this.人物データ = 人物データ
+                this.置き換え用データ = 置き換え用データ
+
+            }
+        },
+        computed: {
+            output: function () {
+                return this.置き換え用データ
+            },
+            output2: function () {
+                if (!this.input) { return }
+                if (!this.output) { return }
+                let カウント = 0
+
+                return this.input.replace(/\[台詞 name=.*\]|「[\s\S]*?」/mg, match => {
+                    return this.output[カウント++]
+                })
+            }
+        }
+    })
+</script>
