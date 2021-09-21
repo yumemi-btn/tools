@@ -50,7 +50,7 @@
         watch: {
             input: function () {
                 if (!this.input) { return }
-                let 名前と台詞 = this.input.match(/\[台詞 name=.*\]|「[\s\S]*?」/mg)
+                let 名前と台詞 = this.input.match(/\[台詞 name=.*\]|「[\s\S]*?」.*$/mg)
 
                 let 人物データ = {}
                 let 現在の名前
@@ -73,7 +73,7 @@
                         let 終了番号 = ('000' + 人物データ[現在の名前].出現回数).slice(-4)
 
                         置き換え用データ.push(台詞一式)
-                        人物データ[現在の名前].台詞.push((開始番号 == 終了番号 ? `【${現在の名前}${開始番号}】\n` : `【${現在の名前}${開始番号} - ${現在の名前}${終了番号}】\n`) + row)
+                        人物データ[現在の名前].台詞.push((開始番号 == 終了番号 ? `【${現在の名前}${開始番号}】\n` : `【${現在の名前}${開始番号} - ${現在の名前}${終了番号}】\n`) + `[台詞 name=${現在の名前}]\n` + row)
                     }
                 });
 
@@ -91,7 +91,7 @@
                 if (!this.output) { return }
                 let カウント = 0
 
-                return this.input.replace(/\[台詞 name=.*\]|「[\s\S]*?」/mg, match => {
+                return this.input.replace(/\[台詞 name=.*\]|「[\s\S]*?」.*$/mg, match => {
                     return this.output[カウント++]
                 })
             }
