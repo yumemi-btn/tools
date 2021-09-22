@@ -29,7 +29,7 @@
     </section>
     <section>
         <h2>playse挿入済データ</h2>
-        <textarea id="output2" v-model="output2" readonly></textarea>
+        <textarea id="output" v-model="output" readonly></textarea>
     </section>
 
     <section v-for="(データ, 名前) in 人物データ">
@@ -50,7 +50,7 @@
         watch: {
             input: function () {
                 if (!this.input) { return }
-                let 名前と台詞 = this.input.match(/\[台詞 name=.*\]|「[\s\S]*?」.*$/mg)
+                let 名前と台詞 = this.input.match(/\[台詞 name=.*\]|^「[\s\S]*?」.*$/mg)
 
                 let 人物データ = {}
                 let 現在の名前
@@ -84,15 +84,12 @@
         },
         computed: {
             output: function () {
-                return this.置き換え用データ
-            },
-            output2: function () {
                 if (!this.input) { return }
-                if (!this.output) { return }
+                if (!this.置き換え用データ) { return }
                 let カウント = 0
 
-                return this.input.replace(/\[台詞 name=.*\]|「[\s\S]*?」.*$/mg, match => {
-                    return this.output[カウント++]
+                return this.input.replace(/\[台詞 name=.*\]|^「[\s\S]*?」.*$/mg, match => {
+                    return this.置き換え用データ[カウント++]
                 })
             }
         }
