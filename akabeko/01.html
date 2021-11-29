@@ -1,18 +1,28 @@
 <style>
-    #akabeko_kao {
+    :root {
+        --rotate-speed: 1.9s;
+        --x-speed: 2.9s;
+        --y-speed: 2.3s;
+    }
+
+    body {
+        margin: 3em 1em;
+    }
+
+    #akabeko_atama {
         position: fixed;
     }
 
-    #akabeko_kao .anime_rotate {
-        animation: rotate 2.9s ease-in-out infinite alternate;
+    #akabeko_atama .anime_rotate {
+        animation: rotate var(--rotate-speed) ease-in-out infinite alternate;
     }
 
-    #akabeko_kao .anime_transX {
-        animation: transX 1.9s ease-in-out infinite alternate;
+    #akabeko_atama .anime_transX {
+        animation: transX var(--x-speed) ease-in-out infinite alternate;
     }
 
-    #akabeko_kao .anime_transY {
-        animation: transY 2.3s ease-in-out infinite alternate;
+    #akabeko_atama .anime_transY {
+        animation: transY var(--y-speed) ease-in-out infinite alternate;
     }
 
     #akabeko img {
@@ -33,37 +43,60 @@
 
     @keyframes transY {
         0% {
-            transform: translateY(-1rem);
+            transform: translateY(-2rem);
         }
 
         100% {
-            transform: translateY(-2rem);
+            transform: translateY(-1rem);
         }
     }
 
     @keyframes transX {
         0% {
-            transform: translateX(2.5rem);
+            transform: translateX(0.5rem);
         }
 
         100% {
-            transform: translateX(3rem);
+            transform: translateX(-0.5rem);
         }
+    }
+
+    #akabeko:not(:hover)>#config {
+        display: none;
+    }
+
+    #config {
+        zoom: 2;
+        position: fixed;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    #config h2 {
+        margin: auto;
     }
 
 </style>
 
 <div id="akabeko">
-    <div id="akabeko_kao">
+    <div id="akabeko_atama">
         <div class="anime_rotate">
             <div class="anime_transY">
                 <div class="anime_transX">
-                    <img src="./akabeko_kao.png">
+                    <img src="./akabeko_atama.png">
                 </div>
             </div>
         </div>
     </div>
     <div id="akabeko_karada">
         <img src="./akabeko_karada.png">
+    </div>
+    <div id="config">
+        <h2>せってい</h2>
+        <ul>
+            <li><label><input type="range" min="0.1" max="8.0" step="0.1" value="1.9" onchange="document.documentElement.style.setProperty('--rotate-speed', this.value + 's')"> 首振り速度</label></li>
+            <li><label><input type="range" min="0.1" max="8.0" step="0.1" value="2.3" onchange="document.documentElement.style.setProperty('--x-speed', this.value + 's')"> 上下速度</label></li>
+            <li><label><input type="range" min="0.1" max="8.0" step="0.1" value="2.9" onchange="document.documentElement.style.setProperty('--y-speed', this.value + 's')"> 左右速度</label></li>
+        </ul>
     </div>
 </div>
