@@ -96,10 +96,29 @@
     <div id="config">
         <h2>せってい</h2>
         <ul>
-            <li><label><input type="range" min="0.1" max="8.0" step="0.1" value="1.9" onchange="document.documentElement.style.setProperty('--rotate-speed', this.value + 's')"> 首振り速度</label></li>
-            <li><label><input type="range" min="0.1" max="8.0" step="0.1" value="2.3" onchange="document.documentElement.style.setProperty('--x-speed', this.value + 's')"> 上下速度</label></li>
-            <li><label><input type="range" min="0.1" max="8.0" step="0.1" value="2.9" onchange="document.documentElement.style.setProperty('--y-speed', this.value + 's')"> 左右速度</label></li>
-            <li><label><input type="range" min="-1.0" max="3.0" step="0.1" value="1.0" onchange="document.documentElement.style.setProperty('--x-pos', this.value + 'em')"> 前後位置</label></li>
+            <li><label><input type="range" name="--rotate-speed" min="0.1" max="8.0" step="0.1" value="1.9" onchange="change_config(this.name, this.value + 's')"> 首振り速度</label></li>
+            <li><label><input type="range" name="--x-speed" min="0.1" max="8.0" step="0.1" value="2.3" onchange="change_config(this.name, this.value + 's')"> 上下速度</label></li>
+            <li><label><input type="range" name="--y-speed" min="0.1" max="8.0" step="0.1" value="2.9" onchange="change_config(this.name, this.value + 's')"> 左右速度</label></li>
+            <li><label><input type="range" name="--x-pos" min="-1.0" max="3.0" step="0.1" value="1.0" onchange="change_config(this.name, this.value + 'em')"> 前後位置</label></li>
         </ul>
     </div>
 </div>
+
+<script>
+    function change_config(property, value) {
+        document.documentElement.style.setProperty(property, value)
+        localStorage.setItem(property, value)
+    }
+
+    function load_config(property) {
+        let value = localStorage.getItem(property)
+        if (value) {
+            document.documentElement.style.setProperty(property, value)
+            document.getElementsByName(property)[0].value = value.replace(/[^0-9.]+/g, '')
+        }
+    }
+    load_config('--rotate-speed')
+    load_config('--x-speed')
+    load_config('--y-speed')
+    load_config('--x-pos')
+</script>
