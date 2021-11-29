@@ -7,7 +7,7 @@
     }
 
     body {
-        margin: 3em 1em;
+        margin: 3em 2em;
     }
 
     #akabeko_atama {
@@ -114,7 +114,7 @@
         let value = localStorage.getItem(property)
         if (value) {
             document.documentElement.style.setProperty(property, value)
-            document.getElementsByName(property)[0].value = value.replace(/[^0-9.]+/g, '')
+            document.getElementsByName(property)[0].value = value.replace(/[^0-9.-]+/g, '')
         }
     }
     load_config('--rotate-speed')
