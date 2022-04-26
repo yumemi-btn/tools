@@ -1,0 +1,155 @@
+<style>
+    :root {
+        --head-rotate-speed: 1.9s;
+        --head-x-speed: 2.9s;
+        --head-y-speed: 2.3s;
+        --tail-speed: 2.3s;
+    }
+
+    body {
+        margin: 0;
+        padding: 3em 1em;
+    }
+
+    #neko_head {
+        position: fixed;
+        margin-left: 0;
+    }
+
+    #neko_head .anime_rotate {
+        animation: rotate var(--head-rotate-speed) ease-in-out infinite alternate;
+    }
+
+    #neko_head .anime_transX {
+        animation: transX var(--head-x-speed) ease-in-out infinite alternate;
+    }
+
+    #neko_head .anime_transY {
+        animation: transY var(--head-y-speed) ease-in-out infinite alternate;
+    }
+
+    #neko_tail {
+        position: fixed;
+        margin-left: 0;
+        z-index: -100;
+    }
+
+    #neko_tail .anime_rotate {
+        border: 3px solid red;
+        animation: tail var(--tail-speed) ease-in-out infinite alternate;
+    }
+
+    #neko img {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        backface-visibility: hidden;
+        user-select: none;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(-2deg)
+        }
+
+        100% {
+            transform: rotate(2deg)
+        }
+    }
+
+    @keyframes transY {
+        0% {
+            transform: translateY(3.8rem);
+        }
+
+        100% {
+            transform: translateY(4.2rem);
+        }
+    }
+
+    @keyframes transX {
+        0% {
+            transform: translateX(15.7rem);
+        }
+
+        100% {
+            transform: translateX(16.3rem);
+        }
+    }
+
+    @keyframes tail {
+        0% {
+            transform: rotate(00deg) translateY(1.8rem);
+        }
+
+        100% {
+            transform: rotate(30deg) translateY(1.8rem);
+        }
+    }
+
+    #neko:not(:hover)>#config {
+        display: none;
+    }
+
+    #config {
+        zoom: 2;
+        position: fixed;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    #config h2 {
+        margin: auto;
+    }
+
+</style>
+
+<div id="neko">
+    <div id="neko_head">
+        <div class="anime_rotate">
+            <div class="anime_transY">
+                <div class="anime_transX">
+                    <img src="./neko_head.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="neko_tail">
+        <div class="anime_rotate">
+            <div class="anime_transY">
+                <div class="anime_transX">
+                    <img src="./neko_tail.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="neko_body">
+        <img src="./neko_body.png">
+    </div>
+    <div id="config">
+        <h2>せってい</h2>
+        <ul>
+            <li><label><input type="range" name="--head-rotate-speed" min="0.1" max="8.0" step="0.1" value="1.9" onchange="change_config(this.name, this.value + 's')"> 首振り速度</label></li>
+            <li><label><input type="range" name="--head-x-speed" min="0.1" max="8.0" step="0.1" value="2.3" onchange="change_config(this.name, this.value + 's')"> 左右速度</label></li>
+            <li><label><input type="range" name="--head-y-speed" min="0.1" max="8.0" step="0.1" value="2.9" onchange="change_config(this.name, this.value + 's')"> 上下速度</label></li>
+            <li><label><input type="range" name="--tail-speed" min="0.1" max="8.0" step="0.1" value="1.9" onchange="change_config(this.name, this.value + 's')"> しっぽ速度</label></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function change_config(property, value) {
+        document.documentElement.style.setProperty(property, value)
+        localStorage.setItem(property, value)
+    }
+
+    function load_config(property) {
+        let value = localStorage.getItem(property)
+        if (value) {
+            document.documentElement.style.setProperty(property, value)
+            document.getElementsByName(property)[0].value = value.replace(/[^0-9.-]+/g, '')
+        }
+    }
+    load_config('--head-rotate-speed')
+    load_config('--head-x-speed')
+    load_config('--head-y-speed')
+    load_config('--tail-speed')
+</script>
