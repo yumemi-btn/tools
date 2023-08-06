@@ -34,8 +34,7 @@
         position: fixed;
     }
 
-    #yumemi_head,
-    #yumemi_body {
+    #yumemi {
         filter: drop-shadow(2px 3px 6px rgba(16, 16, 16, 0.6));
     }
 
@@ -81,7 +80,7 @@
         }
     }
 
-    #yumemi:not(:hover)>#config {
+    #content:not(:hover)>#config {
         display: none;
     }
 
@@ -99,20 +98,22 @@
 
 </style>
 
-<div id="yumemi">
-    <div id="yumemi_head_group" class="anime_rotate">
-        <div id="yumemi_hair_left" class="anime_hair">
-            <img src="./yumemi_hair_left.png">
+<div id="content">
+    <div id="yumemi">
+        <div id="yumemi_head_group" class="anime_rotate">
+            <div id="yumemi_hair_left" class="anime_hair">
+                <img src="./yumemi_hair_left.png">
+            </div>
+            <div id="yumemi_hair_right" class="anime_hair">
+                <img src="./yumemi_hair_right.png">
+            </div>
+            <div id="yumemi_head">
+                <img src="./yumemi_head.png">
+            </div>
         </div>
-        <div id="yumemi_hair_right" class="anime_hair">
-            <img src="./yumemi_hair_right.png">
+        <div id="yumemi_body">
+            <img src="./yumemi_body.png">
         </div>
-        <div id="yumemi_head">
-            <img src="./yumemi_head.png">
-        </div>
-    </div>
-    <div id="yumemi_body">
-        <img src="./yumemi_body.png">
     </div>
     <div id="config">
         <h2>せってい</h2>
